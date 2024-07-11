@@ -1,0 +1,15 @@
+[project]
+name = "comfyui-gg"
+description = "ComfyUI-GG is a collection of ComfyUI nodes designed to enhance productivity in image processing workflows. This plugin provides a set of custom nodes that perform various image manipulations and metadata extractions to streamline your tasks."
+version = "1.0.0"
+license = "LICENSE"
+dependencies = ["sd_parsers"]
+
+[project.urls]
+Repository = "https://github.com/leestuartx/ComfyUI-GG"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "ComfyUI-GG"
+Icon = ""
