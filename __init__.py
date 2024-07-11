@@ -13,20 +13,23 @@ from .nodes.add_padding_to_image import AddPaddingToImage
 from .nodes.metadata_extract_by_seed import MetadataExtractorBySeed
 from .nodes.resize_image_proportionally import ResizeImageProportionally
 from .nodes.image_metadata_extractor import ImageMetadataExtractor
+from .nodes.workspace_node import WorkspaceNode
 
 # Node mappings
 NODE_CLASS_MAPPINGS = {
     "AddPaddingToImage": AddPaddingToImage,
     "MetadataExtractBySeed": MetadataExtractorBySeed,
     "ResizeImageProportionally": ResizeImageProportionally,
-    "ImageMetadataExtractor": ImageMetadataExtractor
+    "ImageMetadataExtractor": ImageMetadataExtractor,
+    "WorkspaceNode": WorkspaceNode
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
     "AddPaddingToImage": "Add Padding to Image",
     "MetadataExtractBySeed": "Metadata Extract by Seed",
     "ResizeImageProportionally": "Resize Image Proportionally",
-    "ImageMetadataExtractor": "Image Metadata Extractor"
+    "ImageMetadataExtractor": "Image Metadata Extractor",
+    "WorkspaceNode": "Workspace Node"
 }
 
 
