@@ -2,7 +2,7 @@ import os
 from PIL import Image, ImageOps
 import torch
 import numpy as np
-from sd_parsers import ParserManager  # , PromptInfo
+from sd_parsers import ParserManager, PromptInfo
 import folder_paths
 from typing import Any, Dict, List
 

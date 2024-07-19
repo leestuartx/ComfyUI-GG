@@ -14,6 +14,8 @@ from .nodes.metadata_extract_by_seed import MetadataExtractorBySeed
 from .nodes.resize_image_proportionally import ResizeImageProportionally
 from .nodes.image_metadata_extractor import ImageMetadataExtractor
 from .nodes.workspace_node import WorkspaceNode
+from .nodes.input_node import InputNode
+from .nodes.output_node import OutputNode
 
 # Node mappings
 NODE_CLASS_MAPPINGS = {
@@ -21,7 +23,9 @@ NODE_CLASS_MAPPINGS = {
     "MetadataExtractBySeed": MetadataExtractorBySeed,
     "ResizeImageProportionally": ResizeImageProportionally,
     "ImageMetadataExtractor": ImageMetadataExtractor,
-    "WorkspaceNode": WorkspaceNode
+    "WorkspaceNode": WorkspaceNode,
+    "InputNode": InputNode,
+    "OutputNode": OutputNode
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -29,8 +33,9 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "MetadataExtractBySeed": "Metadata Extract by Seed",
     "ResizeImageProportionally": "Resize Image Proportionally",
     "ImageMetadataExtractor": "Image Metadata Extractor",
-    "WorkspaceNode": "Workspace Node"
+    "WorkspaceNode": "Workspace Node",
+    "InputNode": "Input Node",
+    "OutputNode": "Output Node"
 }
-
 
 __all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS']
