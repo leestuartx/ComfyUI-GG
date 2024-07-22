@@ -61,6 +61,9 @@ class MetadataExtractorBySeed:
             width, height = img.size
             filename = os.path.basename(image_path)
 
+
+            '''
+
             # Parse the image directly using the parser manager
             prompt_info = parser_manager.parse(img)
             if prompt_info:
@@ -91,6 +94,7 @@ class MetadataExtractorBySeed:
                     "", "", 0, "Unknown",
                     os.path.basename(image_path), ""
                 )
+            '''
         except Exception as e:
             logging.exception("Error processing image")
             return (

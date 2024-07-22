@@ -5,6 +5,7 @@ import numpy as np
 from sd_parsers import ParserManager, PromptInfo
 import folder_paths
 from typing import Any, Dict, List
+from common.metadata_parser import MetadataParser
 
 # Initialize the parser manager
 parser_manager = ParserManager()
@@ -53,143 +54,25 @@ class ImageMetadataExtractor:
         width, height = img.size
         filename = os.path.basename(image_path)
 
-        metadata = ''
-        raw_metadata = ''
-        cfg_scale = 0
-        steps = 0
+        parser = MetadataParser()
+        prompt_info, formatted_metadata, cfg_scale, steps, width, height, positive_prompt, negative_prompt, clip_skip, vaes, models, sampler_name, scheduler, denoise = parser.extract_metadata(image_path)
 
-        positive_prompt = ''
-        negative_prompt = ''
-        clip_skip = 0
-        model_name = ''
-
-        # Parse the image directly using the parser manager
-        prompt_info = None
+        model_name = ', '.join(models)
 
         try:
             prompt_info = parser_manager.parse(img)
-            print(prompt_info)
-
-            if prompt_info:
-                print('There is metadata')
-                try:
-                    metadata = self.format_metadata(prompt_info)
-                except:
-                    print('cant parse metadata')
-
-                try:
-                    raw_metadata = self.format_raw_metadata(prompt_info)
-                except:
-                    print('cant parse raw metadata')
-
-                try:
-                    cfg_scale = self.get_float(prompt_info.parameters, 'cfg')
-                except:
-                    print('cant parse cfg scale')
-
-                try:
-                    steps = self.get_int(prompt_info.parameters, 'steps')
-                except:
-                    pass
-                try:
-                    positive_prompt = self.get_prompt_text(prompt_info.prompts)
-                except:
-                    print('cant parse positive prompt')
-                try:
-                    negative_prompt = self.get_prompt_text(prompt_info.negative_prompts)
-                except:
-                    pass
-
-                try:
-                    clip_skip = self.get_int(prompt_info.parameters, 'clip')
-                except:
-                    pass
-                try:
-                    model_name = ''  # self.get_model_name(prompt_info)
-                except:
-                    pass
-        except:
-            print('could not parse default metadata')
-
-        # Try extracting the positive prompt using the new method
-        temp_metadata = self.extract_metadata_type2(image_path)
-        metadata_str_keys = self.convert_keys_to_strings(temp_metadata)
-        if metadata_str_keys:
-            prompt_data = self.find_positive_prompt_data(metadata_str_keys)
-            if len(prompt_data) > 0:
-                positive_prompt = prompt_data[0]
+            metadata = self.format_metadata(prompt_info)
+            raw_metadata = str(prompt_info)
+        except Exception as e:
+            print('Error extracting metadata:', e)
+            metadata = ''
+            raw_metadata = ''
 
         return (
             output_image, output_mask, metadata, cfg_scale, steps, int(width), int(height),
             positive_prompt, negative_prompt, clip_skip, model_name,
             filename, raw_metadata
         )
-
-
-    def extract_metadata_type2(self, file_path: str) -> Dict[str, Any]:
-        try:
-            img = Image.open(file_path)
-            # Extract metadata using sd_parsers
-            prompt_info = parser_manager.parse(file_path)
-            if not prompt_info:
-                raise ValueError("No metadata found in image.")
-            metadata = {
-                "prompt": prompt_info.parameters,
-                "workflow": prompt_info.metadata
-            }
-            return metadata
-        except Exception as e:
-            raise ValueError(f"Error extracting metadata: {e}")
-
-    def convert_keys_to_strings(self, d):
-        if isinstance(d, dict):
-            return {str(k): self.convert_keys_to_strings(v) for k, v in d.items()}
-        elif isinstance(d, list):
-            return [self.convert_keys_to_strings(i) for i in d]
-        else:
-            return d
-
-    def find_positive_prompt_data(self, metadata: Dict[str, Any]) -> List[str]:
-        output_data = []
-
-        # Checking in both 'prompt' and 'workflow' sections for relevant nodes
-        for key, section in metadata.items():
-            if key == 'workflow' and isinstance(section, dict):
-                if "nodes" in section:
-                    for node in section["nodes"]:
-                        if node.get("type") == "ShowText|pysssss" and node.get("properties", {}).get("Node name for S&R") == "ShowText|pysssss":
-                            widgets_values = node.get("widgets_values", [])
-                            for widget in widgets_values:
-                                if isinstance(widget, list):
-                                    text_value = widget[0]
-                                    output_data.append(text_value)
-                else:
-                    for subkey, subsection in section.items():
-                        if subkey == 'workflow' and isinstance(subsection, dict):
-                            print(subsection)
-                            if "nodes" in subsection:
-                                print('found nodes')
-                                for node in subsection["nodes"]:
-                                    if node.get("type") == "ShowText|pysssss" and node.get("properties", {}).get("Node name for S&R") == "ShowText|pysssss":
-                                        widgets_values = node.get("widgets_values", [])
-                                        for widget in widgets_values:
-                                            if isinstance(widget, list):
-                                                text_value = widget[0]
-                                                output_data.append(text_value)
-
-            elif isinstance(section, dict):
-                for subkey, subsection in section.items():
-                    if subkey == 'workflow' and isinstance(subsection, dict):
-                        if "nodes" in subsection:
-                            for node in subsection["nodes"]:
-                                if node.get("type") == "ShowText|pysssss" and node.get("properties", {}).get("Node name for S&R") == "ShowText|pysssss":
-                                    widgets_values = node.get("widgets_values", [])
-                                    for widget in widgets_values:
-                                        if isinstance(widget, list):
-                                            text_value = widget[0]
-                                            output_data.append(text_value)
-
-        return output_data
 
     def format_metadata(self, prompt_info):
         metadata_parts = []
@@ -229,9 +112,6 @@ class ImageMetadataExtractor:
 
         return '\n\n'.join(metadata_parts)
 
-    def format_raw_metadata(self, prompt_info):
-        return str(prompt_info)
-
     def get_float(self, parameters, key):
         try:
             value = str(parameters.get(key, '0.0')).strip()
@@ -245,11 +125,6 @@ class ImageMetadataExtractor:
             return int(value)
         except (ValueError, TypeError):
             return 0
-
-    def get_prompt_text(self, prompts):
-        if prompts:
-            return '\n'.join([prompt.value for prompt in prompts])
-        return ""
 
 
 NODE_CLASS_MAPPINGS = {

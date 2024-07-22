@@ -16,7 +16,6 @@ ComfyUI-GG is a collection of ComfyUI nodes designed to enhance productivity in 
 ## Nodes
 
 ### 1. Add Padding to Image
-
 **Description:**  
 This node adds pixel padding to the image to achieve a specified dimension.
 
@@ -46,6 +45,8 @@ This node resizes an image proportionally based on a user-defined width.
 **Description:**  
 This node loads an image and extracts its metadata, which can be used for additional image processing.
 
+<img src="./img/image_metadata.jpg" alt="Node Padding" height="320" style="display:block; " />
+
 **Usage:**  
 - Input an image.
 - The node will extract and output the metadata from the image.
@@ -55,6 +56,8 @@ This node loads an image and extracts its metadata, which can be used for additi
 ### 4. Metadata Extract by Seed
 **Description:**  
 This node iterates through images in a directory using a seed, loads each image, and extracts its metadata. This metadata can be used for upscale/resampling automation.
+
+<img src="./img/extract_by_seed.jpg" alt="Node Padding" height="320" style="display:block; " />
 
 **Usage:**  
 - Input a seed value.
