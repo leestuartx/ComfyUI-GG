@@ -13,8 +13,9 @@ class MetadataParser:
             prompt_info = self.parser_manager.parse(img)
             if prompt_info:
                 metadata = self.format_metadata(prompt_info)
-                cfg_scale = self.find_value_in_dict(prompt_info.parameters, 'cfg')
-                steps = self.find_value_in_dict(prompt_info.parameters, 'steps')
+
+                cfg_scale = self.find_value_in_dict(prompt_info.parameters, 'cfg', default=0.0)
+                steps = self.find_value_in_dict(prompt_info.parameters, 'steps', default=0)
                 vaes = self.find_values_in_dict(prompt_info.parameters, 'vae_name')
                 models = [model['content'] if isinstance(model, dict) else model for model in self.find_values_in_dict(prompt_info.parameters, 'ckpt_name')]
                 sampler_name = self.find_value_in_dict(prompt_info.parameters, 'sampler_name')
@@ -26,10 +27,9 @@ class MetadataParser:
                 metadata_str_keys = self.convert_keys_to_strings(temp_metadata)
 
                 prompt_data = self.find_positive_prompt_data(metadata_str_keys)
-                positive_prompt = ""
+                positive_prompt = self.get_prompt_text(prompt_info.prompts)
                 if len(prompt_data) > 0:
                     positive_prompt = prompt_data[0]
-
 
                 negative_prompt = self.get_prompt_text(prompt_info.negative_prompts)
                 clip_skip = self.find_value_in_dict(prompt_info.parameters, 'clip')
