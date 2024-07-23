@@ -16,6 +16,7 @@ from .nodes.image_metadata_extractor import ImageMetadataExtractor
 from .nodes.workspace_node import WorkspaceNode
 from .nodes.input_node import InputNode
 from .nodes.output_node import OutputNode
+from .nodes.for_loop_node import ForLoopNode
 
 # Node mappings
 NODE_CLASS_MAPPINGS = {
@@ -25,7 +26,8 @@ NODE_CLASS_MAPPINGS = {
     "ImageMetadataExtractor": ImageMetadataExtractor,
     "WorkspaceNode": WorkspaceNode,
     "InputNode": InputNode,
-    "OutputNode": OutputNode
+    "OutputNode": OutputNode,
+    "ForLoopNode": ForLoopNode
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -35,7 +37,9 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "ImageMetadataExtractor": "Image Metadata Extractor",
     "WorkspaceNode": "Workspace Node",
     "InputNode": "Input Node",
-    "OutputNode": "Output Node"
+    "OutputNode": "Output Node",
+    "ForLoopNode": "For Loop"
 }
 
-__all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS']
+WEB_DIRECTORY = "./js"
+__all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS', "WEB_DIRECTORY"]

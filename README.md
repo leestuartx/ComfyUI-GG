@@ -9,7 +9,12 @@ ComfyUI-GG is a collection of ComfyUI nodes designed to enhance productivity in 
 
 ## Changelog
 
-### Version 1.1 - 7/22/24
+
+### Version 1.2 - 7/22/24
+- Added a 'for loop' node
+
+
+Version 1.1 - 7/22/24
 - Resolved issues with metadata extractor function.
 
 
@@ -63,6 +68,19 @@ This node iterates through images in a directory using a seed, loads each image,
 - Input a seed value.
 - Provide the directory containing the images.
 - The node will extract metadata from each image in the directory based on the seed.
+
+---
+
+### 5. For Loop
+**Description:**  
+This node is used as a for loop, so that a process can be run for a set number of iterations. Contains
+
+<img src="./img/for_loop.jpg" alt="Node Padding" height="320" style="display:block; " />
+
+**Usage:**  
+- Input a start and end range.
+- The node will run until it reaches the end.
+- This node can (for example) be tied into a 'seed' input in order to run a KSampler for a set number of iterations.
 
 ---
 
