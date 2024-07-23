@@ -1,5 +1,4 @@
 import server
-from .common.config import MAX_SEED_NUM
 
 class ForLoopNode:
     @classmethod
@@ -9,32 +8,31 @@ class ForLoopNode:
                 "start": ("INT", {"default": 0, "min": 0}),
                 "end": ("INT", {"default": 10, "min": 0}),
                 "current_index": ("INT", {"default": 0, "min": 0}),
+                "iterations": ("INT", {"default": 0, "min": 0}),
             },
-            "hidden": {"prompt": "PROMPT", "extra_pnginfo": "EXTRA_PNGINFO", "my_unique_id": "UNIQUE_ID"},
+            "hidden": {"my_unique_id": "UNIQUE_ID"},
         }
 
-    RETURN_TYPES = ("INT",)
-    RETURN_NAMES = ("current_index",)
+    RETURN_TYPES = ("INT", "INT")
+    RETURN_NAMES = ("current_index", "iterations")
     FUNCTION = "increment_index"
     CATEGORY = "GG/Loop"
     OUTPUT_NODE = True
 
-    def increment_index(self, start, end, current_index, prompt=None, extra_pnginfo=None, my_unique_id=None):
-        has_changed = False
+    def increment_index(self, start, end, current_index, iterations, my_unique_id=None):
         if current_index < end:
             current_index += 1
-            has_changed = True
         else:
-            current_index = end # start  # Reset to start if it reaches end
+            current_index = start  # Reset to start if it reaches end
+            iterations += 1  # Increment iterations when the loop reaches the end
 
-        if has_changed == True:
-            # Send the updated current_index to the server
-            server.PromptServer.instance.send_sync(
-                "update-current-index",
-                {"node_id": my_unique_id, "current_index": current_index}
-            )
+        # Send the updated current_index and iterations to the server
+        server.PromptServer.instance.send_sync(
+            "update-current-index",
+            {"node_id": my_unique_id, "current_index": current_index, "iterations": iterations}
+        )
 
-        return (current_index,)
+        return (current_index, iterations)
 
 # Node Mappings
 NODE_CLASS_MAPPINGS = {
