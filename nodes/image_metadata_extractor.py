@@ -5,7 +5,7 @@ import numpy as np
 from sd_parsers import ParserManager, PromptInfo
 import folder_paths
 from typing import Any, Dict, List
-from common.metadata_parser import MetadataParser
+from .common.metadata_parser import MetadataParser
 
 # Initialize the parser manager
 parser_manager = ParserManager()
