@@ -45,7 +45,7 @@ class ImageAndTextDescriptionBySeed:
             if not files:
                 raise ValueError("No image files found in the directory.")
 
-            # Calculate the index based on the seed
+            # Calculate the index based on the seed for the image
             index = seed % len(files)
             image_path = os.path.join(directory, files[index])
 
@@ -77,11 +77,12 @@ class ImageAndTextDescriptionBySeed:
                 metadata = ''
                 raw_metadata = ''
 
-            # Get the first text file in the directory
+            # Select text file based on the seed
             text_files = [f for f in os.listdir(directory)
                           if os.path.isfile(os.path.join(directory, f)) and f.lower().endswith('.txt')]
             if text_files:
-                text_file = text_files[0]
+                text_index = seed % len(text_files)
+                text_file = text_files[text_index]
                 text_path = os.path.join(directory, text_file)
                 with open(text_path, 'r', encoding='utf-8') as f:
                     text_content = f.read()
@@ -106,7 +107,6 @@ class ImageAndTextDescriptionBySeed:
         if not os.path.isabs(path):
             path = os.path.abspath(path)
         return path
-
 
 NODE_CLASS_MAPPINGS = {
     "ImageAndTextDescriptionBySeed": ImageAndTextDescriptionBySeed
