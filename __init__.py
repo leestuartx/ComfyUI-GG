@@ -17,6 +17,7 @@ from .nodes.workspace_node import WorkspaceNode
 from .nodes.input_node import InputNode
 from .nodes.output_node import OutputNode
 from .nodes.for_loop_node import ForLoopNode
+from .nodes.image_and_text_description_by_seed import ImageAndTextDescriptionBySeed
 
 # Node mappings
 NODE_CLASS_MAPPINGS = {
@@ -27,7 +28,8 @@ NODE_CLASS_MAPPINGS = {
     "WorkspaceNode": WorkspaceNode,
     "InputNode": InputNode,
     "OutputNode": OutputNode,
-    "ForLoopNode": ForLoopNode
+    "ForLoopNode": ForLoopNode,
+    "ImageAndTextDescriptionBySeed": ImageAndTextDescriptionBySeed
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -38,7 +40,8 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "WorkspaceNode": "Workspace Node",
     "InputNode": "Input Node",
     "OutputNode": "Output Node",
-    "ForLoopNode": "For Loop"
+    "ForLoopNode": "For Loop",
+    "ImageAndTextDescriptionBySeed": "Image and Text Description By Seed"
 }
 
 WEB_DIRECTORY = "./js"
